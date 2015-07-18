@@ -73,6 +73,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		// Watch for file changes and live-reload the browser
 		watch: {
 			html: {
 				files: ['client/src/index.html'],
@@ -94,7 +95,26 @@ module.exports = function(grunt) {
 				options: {
 					livereload: true
 				}
+			},
+			serverjs: {
+				files: ['server.js'],
+				options: {
+					livereload: true
+				}
 			}
+		},
+		// Start the node server
+		nodemon: {
+			dev: {
+				script: 'server.js'
+			}
+		},
+		// Run watch and nodemon at the same time
+		concurrent: {
+			options: {
+				logConcurrentOutput: true
+			},
+			tasks: ['nodemon', 'watch']
 		},
 		// Finally, clear the temporary files and directories
 		clean: ['tmp']
@@ -107,13 +127,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass')
 	grunt.loadNpmTasks('grunt-contrib-clean')
 	grunt.loadNpmTasks('grunt-contrib-watch')
-
-	// The node server
-	grunt.registerTask('server', 'Start the node.js server', function() {
-	    grunt.log.writeln('Started node.js server on http://localhost:8080')
-	    require('./server.js').listen(8080)
-	})
+	grunt.loadNpmTasks('grunt-nodemon');
+	grunt.loadNpmTasks('grunt-concurrent');
 
 	grunt.registerTask('default', ['babel', 'uglify:build', 'htmlmin:build', 'sass:build', 'clean'])
-	grunt.registerTask('dev', ['server', 'watch'])
+	grunt.registerTask('dev', ['concurrent'])
 }

@@ -3,11 +3,6 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt)
 
 	grunt.initConfig({
-		// Watch for file changes during development
-		watch: {
-			files: [''],
-			tasks: ['jshint']
-		},
 		// Minify html for speedy loading
 		htmlmin: {
 			build: {
@@ -25,14 +20,19 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		// Convert to ES6
 		babel: {
 			options: {
 				sourceMap: true
 			},
 			dist: {
-				files: {
-					'tmp/app.js': 'client/src/js/app.js'
-				}
+				files: [{
+					expand: true,
+					cwd: 'client/src/js',
+					src: ['**/*.jsx'],
+					dest: 'tmp',
+					ext: '.js'
+				}]
 			}
 		},
 		// Uglify and condense js files
@@ -42,13 +42,13 @@ module.exports = function(grunt) {
 					'client/build/js/react-bundle.min.js': [
 						'bower_components/react/react.min.js',
 						'bower_components/react/JSXTransformer.js'
-					],
-					'client/build/js/app.min.js': 'tmp/app.js'
+					]
 				}
 			},
 			dev: {
 				files: {
-					'client/build/js/app.min.js': 'tmp/app.js'
+					'client/build/js/components.min.js': ['tmp/components/**/*.js'],
+					'client/build/js/app.min.js': ['tmp/app.js']
 				}
 			}
 		},
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
 				}
 			},
 			js: {
-				files: ['client/src/js/**/*.js'],
+				files: ['client/src/js/**/*.js', 'client/src/js/**/*.jsx'],
 				tasks: ['babel', 'uglify:dev', 'clean'],
 				options: {
 					livereload: true
@@ -122,6 +122,7 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-watch')
 	grunt.loadNpmTasks('grunt-contrib-htmlmin')
+	grunt.loadNpmTasks('grunt-react')
 	grunt.loadNpmTasks('grunt-contrib-uglify')
 	grunt.loadNpmTasks('grunt-contrib-compass')
 	grunt.loadNpmTasks('grunt-contrib-sass')
@@ -130,6 +131,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
 
-	grunt.registerTask('default', ['babel', 'uglify:build', 'htmlmin:build', 'sass:build', 'clean'])
+	grunt.registerTask('default',
+		[
+			'babel',
+			'uglify:dev',
+			'uglify:build',
+			'htmlmin:build',
+			'sass:build',
+			'clean'
+		]
+	)
 	grunt.registerTask('dev', ['concurrent'])
 }

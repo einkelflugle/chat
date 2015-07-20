@@ -37,18 +37,23 @@ module.exports = function(grunt) {
 		},
 		// Uglify and condense js files
 		uglify: {
+			// The 'build' task also includes the 'dev' and 'serverDev'
+			// tasks during a grunt build.
 			build: {
 				files: {
-					'client/build/js/react-bundle.min.js': [
-						'bower_components/react/react.min.js',
-						'bower_components/react/JSXTransformer.js'
-					]
+					'client/build/js/react-bundle.min.js':
+						'bower_components/react/react.min.js'
 				}
 			},
 			dev: {
 				files: {
 					'client/build/js/components.min.js': ['tmp/components/**/*.js'],
-					'client/build/js/app.min.js': ['tmp/app.js']
+					'client/build/js/app.min.js': ['shared/**/*.js', 'tmp/app.js']
+				}
+			},
+			serverDev: {
+				files: {
+					'server/build/server.min.js': ['shared/**/*.js', 'server/src/server.js']
 				}
 			}
 		},
@@ -90,14 +95,15 @@ module.exports = function(grunt) {
 				}
 			},
 			js: {
-				files: ['client/src/js/**/*.js', 'client/src/js/**/*.jsx'],
+				files: ['client/src/js/**/*.js', 'client/src/js/**/*.jsx', 'shared/**/*.js'],
 				tasks: ['babel', 'uglify:dev', 'clean'],
 				options: {
 					livereload: true
 				}
 			},
 			serverjs: {
-				files: ['server.js'],
+				files: ['server/src/server.js'],
+				tasks: ['uglify:serverDev'],
 				options: {
 					livereload: true
 				}
@@ -106,7 +112,7 @@ module.exports = function(grunt) {
 		// Start the node server
 		nodemon: {
 			dev: {
-				script: 'server.js'
+				script: 'server/build/server.min.js'
 			}
 		},
 		// Run watch and nodemon at the same time
@@ -135,6 +141,7 @@ module.exports = function(grunt) {
 		[
 			'babel',
 			'uglify:dev',
+			'uglify:serverDev',
 			'uglify:build',
 			'htmlmin:build',
 			'sass:build',

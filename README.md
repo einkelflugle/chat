@@ -15,15 +15,10 @@ Once in the 'chat' directory, install dependencies
 npm install
 ```
 3.
-Build the project
-```
-grunt
-```
-4.
 Install MongoDB and setup a MongoDB database.
 
-If authentication is enabled, chat will try to login with the configured username and password (see step 5).
-5.
+If authentication is enabled, chat will try to login with the configured username and password (see next step).
+4.
 Modify the project's config to suit your needs.
 Inside the ```config``` directory, you should create a file called ```config.js```, which contains variables specific to your environment.
 Below is an example ```config.js``` file:
@@ -37,6 +32,11 @@ var config = {
 }
 ```
 If this file is not created, a set of default values will be used.
+5.
+Build the project
+```
+grunt
+```
 6.
 Start the server (sudo privileges are needed for port 80 binding)
 ```

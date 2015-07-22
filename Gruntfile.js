@@ -48,12 +48,20 @@ module.exports = function(grunt) {
 			dev: {
 				files: {
 					'client/build/js/components.min.js': ['tmp/components/**/*.js'],
-					'client/build/js/app.min.js': ['shared/**/*.js', 'tmp/app.js']
+					'client/build/js/app.min.js': [
+						'config/**/*.js',
+						'shared/**/*.js',
+						'tmp/app.js'
+					]
 				}
 			},
 			serverDev: {
 				files: {
-					'server/build/server.min.js': ['shared/**/*.js', 'server/src/server.js']
+					'server/build/server.min.js': [
+						'config/**/*.js',
+						'shared/**/*.js',
+						'server/src/server.js'
+					]
 				}
 			}
 		},
@@ -95,11 +103,19 @@ module.exports = function(grunt) {
 				}
 			},
 			js: {
-				files: ['client/src/js/**/*.js', 'client/src/js/**/*.jsx', 'shared/**/*.js'],
+				files: [
+					'client/src/js/**/*.js',
+					'client/src/js/**/*.jsx',
+					'shared/**/*.js'
+				],
 				tasks: ['babel', 'uglify:dev', 'clean'],
 				options: {
 					livereload: true
 				}
+			},
+			config: {
+				files: ['config/**/*.js'],
+				tasks: ['uglify:serverDev', 'uglify:dev']
 			},
 			serverjs: {
 				files: ['server/src/server.js'],

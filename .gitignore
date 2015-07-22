@@ -2,3 +2,4 @@ node_modules/
 .sass-cache/
 client/build/
 server/build/
+config/config.js

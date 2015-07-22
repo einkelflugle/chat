@@ -1,14 +1,27 @@
 var connect = require('connect')
 var serveStatic = require('serve-static')
 var MongoClient = require('mongodb').MongoClient
-var sockets = require('socket.io').listen(8100).sockets
+var socketio = require('socket.io')
+
+// Set up listening for clients
+var socketPort = 8100
+if (typeof config !== 'undefined') {
+	socketPort = config.socket_port
+}
+var sockets = socketio.listen(socketPort).sockets
 
 // Configures database connection information
-const DB_URL = process.env.DB_URL || '127.0.0.1'
-const DB_PASSWORD = process.env.DB_PASSWORD || 'password'
-const DB_USERNAME = process.env.DB_TABLE || 'chatClient'
-const CONNECTION_URL = 'mongodb://' + DB_USERNAME + ':' + DB_PASSWORD + '@' + DB_URL
-
+var dbURL, dbUsername, dbPassword
+if (typeof config === 'undefined') {
+	dbURL = '127.0.0.1'
+	dbUsername = 'chatClient'
+	dbPassword = 'password'
+} else {
+	dbURL = config.db_url
+	dbUsername = config.db_username
+	dbPassword = config.db_password
+}
+const CONNECTION_URL = 'mongodb://' + dbUsername + ':' + dbPassword + '@' + dbURL
 // Regex for making sure names and messages aren't blank
 const WHITESPACE_PATTERN = /^\s*$/
 
@@ -28,6 +41,8 @@ connect().use(serveStatic(__dirname + "/../../client/build")).listen(80, functio
 // Connects to the database
 MongoClient.connect(CONNECTION_URL, function(error, defaultDb) {
 	if (error) throw error
+
+	console.log('Connected to database at ' + CONNECTION_URL)
 
 	// Switches to the 'chat' database
 	var db = defaultDb.db('chat')

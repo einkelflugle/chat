@@ -1,7 +1,18 @@
 // Initialize a connection with the server
 var socket
 try {
-	socket = io.connect('http://localhost:8100')
+	var hostname, port
+	if (typeof config === 'undefined') {
+		// If the config file doesn't exist,
+		// assign some default values
+		hostname = 'localhost'
+		port = 8100
+	} else {
+		// If it does exist, read the values from it
+		hostname = config.socket_hostname
+		port = config.socket_port
+	}
+	socket = io.connect('http://' + hostname + ':' + port)
 } catch(error) {
 	console.log('Could not connect.')
 }

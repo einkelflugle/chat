@@ -20,6 +20,24 @@ Build the project
 grunt
 ```
 4.
+Install MongoDB and setup a MongoDB database.
+
+If authentication is enabled, chat will try to login with the configured username and password (see step 5).
+5.
+Modify the project's config to suit your needs.
+Inside the ```config``` directory, you should create a file called ```config.js```, which contains variables specific to your environment.
+Below is an example ```config.js``` file:
+```javascript
+var config = {
+	socket_hostname: 'example.com', // the location of the node.js server
+	socket_port: 8100, // the port which the client and server will use to communicate
+	db_url: 'db.example.com', // the location of the MongoDB database
+	db_username: 'chatClient', // the MongoDB username
+	db_password: 'password' // the MongoDB password
+}
+```
+If this file is not created, a set of default values will be used.
+6.
 Start the server (sudo privileges are needed for port 80 binding)
 ```
 sudo node server.js

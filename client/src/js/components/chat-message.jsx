@@ -1,7 +1,10 @@
 var ChatMessage = React.createClass({
+	getInitialState: function() {
+		return { data: this.props.data }
+	},
 	render: function() {
 		return (
-			<li>{this.props.name}: {this.props.content}</li>
+			<p>{this.state.data.name}: {this.state.data.message}</p>
 		)
 	}
 })

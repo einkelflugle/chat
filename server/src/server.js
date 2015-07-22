@@ -9,6 +9,9 @@ const DB_PASSWORD = process.env.DB_PASSWORD || 'password'
 const DB_USERNAME = process.env.DB_TABLE || 'chatClient'
 const CONNECTION_URL = 'mongodb://' + DB_USERNAME + ':' + DB_PASSWORD + '@' + DB_URL
 
+// Regex for making sure names and messages aren't blank
+const WHITESPACE_PATTERN = /^\s*$/
+
 // Sets up the server to serve the app's static html file
 connect().use(serveStatic(__dirname + "/../../client/build")).listen(80, function(error) {
 	if (error) return cb(error)
@@ -30,14 +33,36 @@ MongoClient.connect(CONNECTION_URL, function(error, defaultDb) {
 	var db = defaultDb.db('chat')
 
 	// When a client connects
-	sockets.on('connection', function(socket) {
+	sockets.on('connection', function(client) {
 		// Retrieve the collection of stored chat messages
 		var messagesCol = db.collection('messages')
 
 		messagesCol.find().limit(100).sort({ _id: 1 }).toArray(function(error, response) {
 			if (error) throw error
 
-			socket.emit(channels.EXISTING_MESSAGES, response)
+			client.emit(channels.EXISTING_MESSAGES, response)
+		})
+
+		// On the event of a new message being submitted
+		client.on(channels.NEW_MESSAGE, function(data) {
+			// Make sure the fields are not blank
+			if (WHITESPACE_PATTERN.test(data.name) || WHITESPACE_PATTERN.test(data.message)) {
+				client.emit(channels.STATUS, statuses.INVALID_INPUT)
+			} else {
+				// If everything is good, submit the message to all clients
+				// and save it to the database
+				sockets.emit(channels.NEW_MESSAGE, data)
+				messagesCol.insert({ name: data.name, message: data.message })
+				console.log('Inserted new message "' + data.message + '".')
+				// Send the user a confirmation status
+				client.emit(channels.STATUS, statuses.SUCCESSFULLY_SENT)
+			}
+		})
+
+		// On the event of a client typing in the message field
+		client.on(channels.TYPING, function(data) {
+			// Tell all clients
+			sockets.emit(channels.TYPING, data)
 		})
 	})
 })

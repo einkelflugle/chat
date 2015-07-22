@@ -1,10 +1,13 @@
+// Initialize a connection with the server
+var socket
 try {
-	var socket = io.connect('http://localhost:8100')
+	socket = io.connect('http://localhost:8100')
 } catch(error) {
 	console.log('Could not connect.')
 }
 
-socket.on(channels.EXISTING_MESSAGES, function(data) {
-	console.log(data)
-	React.render(<ChatBox />, document.getElementById('container'))
-})
+// Render the app, passing the socket in the props
+React.render(
+	<ChatApp socket={socket} />,
+	document.getElementById('container')
+)

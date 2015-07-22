@@ -20,18 +20,18 @@ Build the project
 grunt
 ```
 4.
-Start the server
+Start the server (sudo privileges are needed for port 80 binding)
 ```
-node server.js
+sudo node server.js
 ```
 
-You can now access the app by opening ```http://localhost:8100``` in a browser.
+You can now access the app by opening ```http://localhost``` in a browser.
 
 ## Making changes
 The grunt ```dev``` task handles changes to files and recompiles as needed. Get started with
 ```
-grunt dev
+sudo grunt dev
 ```
-This command will start the node server (```server.js```) and will also run the ```watch``` task. Simply open your browser and point it at ```http://localhost:8100```, make some changes to the project, and grunt will automatically recompile it for you.
+This command will start the node server (```server.js```) and will also run the ```watch``` task. Simply open your browser and point it at ```http://localhost```, make some changes to the project, and grunt will automatically recompile it for you.
 
 LiveReload is also enabled, so if you have the plugin installed in your browser, just enable it and the page will automatically reload when something changes.

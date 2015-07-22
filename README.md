@@ -18,6 +18,7 @@ npm install
 Install MongoDB and setup a MongoDB database.
 
 If authentication is enabled, chat will try to login with the configured username and password (see next step).
+
 4.
 Modify the project's config to suit your needs.
 Inside the ```config``` directory, you should create a file called ```config.js```, which contains variables specific to your environment.

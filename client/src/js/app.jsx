@@ -20,5 +20,5 @@ try {
 // Render the app, passing the socket in the props
 React.render(
 	<ChatApp socket={socket} />,
-	document.getElementById('container')
+	document.querySelector('body')
 )

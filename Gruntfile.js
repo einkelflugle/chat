@@ -86,6 +86,20 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		// Use autoprefixer for browser compatability
+		postcss: {
+			options: {
+				processors: [
+					require('autoprefixer-core')({
+						browsers: 'last 2 versions'
+					})
+				]
+			},
+			dist: {
+				src: 'client/build/css/main.css',
+				dest: 'client/build/css/main-prefixed.css'
+			}
+		},
 		// Watch for file changes and live-reload the browser
 		watch: {
 			html: {
@@ -97,7 +111,7 @@ module.exports = function(grunt) {
 			},
 			sass: {
 				files: ['client/src/sass/main.sass', 'client/src/sass/**/*.sass'],
-				tasks: ['sass:dev'],
+				tasks: ['sass:dev', 'postcss'],
 				options: {
 					livereload: true
 				}
@@ -161,6 +175,7 @@ module.exports = function(grunt) {
 			'uglify:build',
 			'htmlmin:build',
 			'sass:build',
+			'postcss',
 			'clean'
 		]
 	)

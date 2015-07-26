@@ -47,6 +47,7 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
+					'client/build/js/vendor.min.js': ['client/src/js/vendor/**/*.js'],
 					'client/build/js/components.min.js': ['tmp/components/**/*.js'],
 					'client/build/js/app.min.js': [
 						'config/**/*.js',

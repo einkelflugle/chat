@@ -1,6 +1,6 @@
 var MessageForm = React.createClass({
 	getInitialState: function() {
-		return { nameValue: '', messageValue: '', isTyping: false }
+		return { nameValue: 'Guest', messageValue: '', isTyping: false }
 	},
 	handleNameChange: function(e) {
 		this.setState({ nameValue: e.target.value })
@@ -46,9 +46,9 @@ var MessageForm = React.createClass({
 	render: function() {
 		return (
 			<div className="chat--form">
-				<input type="text" ref="nameInput" onChange={this.handleNameChange} defaultValue="Guest" value={this.state.nameValue} />
-				<input type="text" ref="messageInput" onChange={this.handleMessageChange} value={this.state.messageValue} onKeyUp={this.handleKeyUp} />
+				<input type="text" ref="nameInput" onChange={this.handleNameChange} value={this.state.nameValue} className="chat--form--name" />
 				<button onClick={this.submitChat}>Submit</button>
+				<input type="text" ref="messageInput" onChange={this.handleMessageChange} value={this.state.messageValue} onKeyUp={this.handleKeyUp} placeholder="Message" className="chat--form--content" />
 			</div>
 		)
 	}

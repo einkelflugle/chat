@@ -21,7 +21,10 @@ var MessageContainer = React.createClass({
 			messages.push(<ChatMessage data={message} />)
 		})
 		return (
-			<div class="chat--messages">
+			<div className="container chat--container">
+				<div className="chat--count">
+					{this.state.messages.length} messages
+				</div>
 				{messages}
 			</div>
 		)

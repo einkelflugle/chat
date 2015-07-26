@@ -66,9 +66,11 @@ MongoClient.connect(CONNECTION_URL, function(error, defaultDb) {
 			} else {
 				// If everything is good, submit the message to all clients
 				// and save it to the database
+				var now = new Date()
+				data.when = now
 				sockets.emit(channels.NEW_MESSAGE, data)
-				messagesCol.insert({ name: data.name, message: data.message })
-				console.log('Inserted new message "' + data.message + '".')
+				messagesCol.insert({ name: data.name, message: data.message, when: now })
+				console.log(now + ': Inserted new message "' + data.message + '".')
 				// Send the user a confirmation status
 				client.emit(channels.STATUS, statuses.SUCCESSFULLY_SENT)
 			}

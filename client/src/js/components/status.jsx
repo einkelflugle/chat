@@ -12,6 +12,10 @@ var Status = React.createClass({
 		this.setState({ status: '' })
 	},
 	render: function() {
-		return <span>{this.state.status}</span>
+		if (this.state.status !== '') {
+			return <span className="container chat--status">{this.state.status}</span>
+		} else {
+			return null
+		}
 	}
 })

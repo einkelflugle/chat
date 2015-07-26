@@ -22,13 +22,13 @@ var TypersList = React.createClass({
 		this.setState({ typers: allTypers })
 	},
 	render: function() {
-		var typersString = 'Typers: '
+		var typersString = 'Typing: '
 		for (var i = 0; i < this.state.typers.length; i++) {
 			typersString += i < this.state.typers.length - 1 ? this.state.typers[i] + ', ' : this.state.typers[i]
 		};
 		typersString += ' (' + this.state.typers.length + ')'
 		return (
-			<span className="chat--typers">{typersString}</span>
+			<span className="container chat--typers">{typersString}</span>
 		)
 	}
 })

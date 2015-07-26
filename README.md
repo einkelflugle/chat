@@ -15,9 +15,9 @@ Once in the 'chat' directory, install dependencies
 npm install
 ```
 3.
-Install MongoDB and setup a MongoDB database.
+Install, setup and run a MongoDB database.
 
-If authentication is enabled, chat will try to login with the configured username and password (see next step).
+If you enable authentication for MongoDB (using the ```--auth``` flag), chat will try to log in with the configured username and password (see next step).
 
 4.
 Modify the project's config to suit your needs.
@@ -28,8 +28,8 @@ var config = {
 	socket_hostname: 'example.com', // the location of the node.js server
 	socket_port: 8100, // the port which the client and server will use to communicate
 	db_url: 'db.example.com', // the location of the MongoDB database
-	db_username: 'chatClient', // the MongoDB username
-	db_password: 'password' // the MongoDB password
+	db_username: 'chatClient', // the MongoDB username (optional)
+	db_password: 'password' // the MongoDB password (optional)
 }
 ```
 If this file is not created, a set of default values will be used.
